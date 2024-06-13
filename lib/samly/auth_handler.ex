@@ -58,7 +58,9 @@ defmodule Samly.AuthHandler do
     %IdpData{id: idp_id} = idp = conn.private[:samly_idp]
     %IdpData{esaml_idp_rec: idp_rec, esaml_sp_rec: sp_rec} = idp
     sp = ensure_sp_uris_set(sp_rec, conn)
-    Logger.info(inspect(sp), label: "61sp:")
+
+    Logger.info("62here!!!!!!!!!!")
+    Logger.info("63sp: #{inspect(sp)}")
 
     target_url = conn.private[:samly_target_url] || "/"
     assertion_key = get_session(conn, "samly_assertion_key")
@@ -70,7 +72,7 @@ defmodule Samly.AuthHandler do
       _ ->
         relay_state = State.gen_id()
 
-        Logger.info(inspect(idp_rec), label: "72idp:")
+        Logger.info("72idp: #{inspect(idp_rec)}")
 
         {idp_signin_url, req_xml_frag} =
           Helper.gen_idp_signin_req(sp, idp_rec, Map.get(idp, :nameid_format))
