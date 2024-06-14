@@ -60,7 +60,7 @@ defmodule Samly.AuthHandler do
     sp = ensure_sp_uris_set(sp_rec, conn)
 
     Logger.info("62here!!!!!!!!!!")
-    Logger.info("63sp: #{inspect(sp)}")
+    Logger.info("63idp: #{inspect(idp)}")
 
     target_url = conn.private[:samly_target_url] || "/"
     assertion_key = get_session(conn, "samly_assertion_key")
