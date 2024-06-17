@@ -97,12 +97,15 @@ defmodule Samly.IdpData do
 
   @spec load_provider(map(), %{required(id()) => %SpData{}}) :: %IdpData{} | no_return
   def load_provider(idp_config, service_providers) do
-    %IdpData{}
-    |> save_idp_config(idp_config)
-    |> load_metadata(idp_config)
-    |> override_nameid_format(idp_config)
-    |> update_esaml_recs(service_providers, idp_config)
-    |> verify_slo_url()
+    idp = %IdpData{}
+      |> save_idp_config(idp_config)
+      |> load_metadata(idp_config)
+      |> override_nameid_format(idp_config)
+      |> update_esaml_recs(service_providers, idp_config)
+      |> verify_slo_url()
+
+    Logger.info("107idp: #{inspect(idp)}")
+    idp
   end
 
   @spec save_idp_config(%IdpData{}, map()) :: %IdpData{}

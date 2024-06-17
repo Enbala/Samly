@@ -52,6 +52,7 @@ defmodule Samly.SpData do
 
   @spec load_provider(map) :: %SpData{} | no_return
   def load_provider(%{} = opts_map) do
+    Logger.info("[Samly] opts_map: #{inspect(opts_map)}")
     sp_data = %__MODULE__{
       id: Map.get(opts_map, :id, ""),
       entity_id: Map.get(opts_map, :entity_id, ""),
@@ -63,6 +64,7 @@ defmodule Samly.SpData do
       org_displayname: Map.get(opts_map, :org_displayname, @default_org_displayname),
       org_url: Map.get(opts_map, :org_url, @default_org_url)
     }
+    Logger.info("[Samly] sp_data: #{inspect(sp_data)}")
 
     sp_data |> set_id(opts_map) |> load_cert(opts_map) |> load_key(opts_map)
   end
