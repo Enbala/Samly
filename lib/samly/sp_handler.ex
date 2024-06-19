@@ -26,6 +26,7 @@ defmodule Samly.SPHandler do
   end
 
   def consume_signin_response(conn) do
+    Logger.info("29consume_signin_response")
     %IdpData{id: idp_id} = idp = conn.private[:samly_idp]
     %IdpData{pre_session_create_pipeline: pipeline, esaml_sp_rec: sp_rec} = idp
     sp = ensure_sp_uris_set(sp_rec, conn)
@@ -37,9 +38,11 @@ defmodule Samly.SPHandler do
     with {:ok, assertion} <- Helper.decode_idp_auth_resp(sp, saml_encoding, saml_response),
          :ok <- validate_authresp(conn, assertion, relay_state),
          assertion = %Assertion{assertion | idp_id: idp_id},
+         :ok <- Logger.info("42consume_signin_response assertion: #{inspect(assertion)}"),
          conn = conn |> put_private(:samly_assertion, assertion),
          {:halted, %Conn{halted: false} = conn} <- {:halted, pipethrough(conn, pipeline)} do
       updated_assertion = conn.private[:samly_assertion]
+      Logger.info("45consume_signin_response updated_assertion: #{inspect(updated_assertion)}")
       computed = updated_assertion.computed
       assertion = %Assertion{assertion | computed: computed, idp_id: idp_id}
 
@@ -90,6 +93,7 @@ defmodule Samly.SPHandler do
     Logger.info("90validate_authresp conn: #{inspect(conn)}")
     %IdpData{id: idp_id} = conn.private[:samly_idp]
     rs_in_session = get_session(conn, "relay_state")
+    Logger.info("93validate_authresp rs_in_session: #{inspect(rs_in_session)}")
     idp_id_in_session = get_session(conn, "idp_id")
     url_in_session = get_session(conn, "target_url")
 
