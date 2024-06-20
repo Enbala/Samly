@@ -91,6 +91,8 @@ defmodule Samly.AuthHandler do
           req_xml_frag,
           relay_state
         )
+        Logger.info("94conn: #{inspect(conn)}")
+        conn
     end
 
     # rescue
